@@ -1,33 +1,43 @@
 package com.nicholasbrooking.pkg.schachfish.service.mapper
 
-import com.nicholasbrooking.pkg.schachfish.domain.entities.Piece
-import com.nicholasbrooking.pkg.schachfish.domain.entities.PieceBuilder
+import com.nicholasbrooking.pkg.schachfish.domain.util.PieceDtoBuilder
 import com.nicholasbrooking.pkg.schachfish.domain.models.*
-import com.nicholasbrooking.pkg.schachfish.service.exception.InvalidInputException
+import com.nicholasbrooking.pkg.schachfish.domain.models.board.*
+import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceCreationDto
+import com.nicholasbrooking.pkg.schachfish.domain.util.BoardStateDtoBuilder
+import com.nicholasbrooking.pkg.schachfish.service.exception.SchachfishInvalidInput
 
 
-fun com.nicholasbrooking.pkg.schachfish.api.models.BoardStateDto.toInternalDto() = BoardStateDto(
-        pieceMatrix = buildPieceMatrix(this.blackStatus?.pieces, this.whiteStatus?.pieces),
-        canCastleDto = buildCanCastleMap(
-                this.blackStatus?.canCastleKingSide,
-                this.blackStatus?.canCastleQueenSide,
-                this.whiteStatus?.canCastleKingSide,
-                this.whiteStatus?.canCastleQueenSide
-        ),
-        enPassantDto = this.enPassant.toInternalDto(),
-        turn = this.turn?.toInternalEnum() ?: throw InvalidInputException("Turn not set")
-)
+fun com.nicholasbrooking.pkg.schachfish.api.models.BoardStateDto.toInternalEntity(): BoardStateDto {
+    val blackPieces = this.blackStatus?.pieces?.map {
+        PieceDtoBuilder.fromPieceCreationDto(it.toInternalCreationDto(Colour.black))
+    } ?: throw SchachfishInvalidInput("No black pieces list")
+    val whitePieces = this.whiteStatus?.pieces?.map {
+        PieceDtoBuilder.fromPieceCreationDto(it.toInternalCreationDto(Colour.white))
+    } ?: throw SchachfishInvalidInput("No white pieces list")
+    val boardStateCreationDto = BoardStateCreationDto(
+            pieceList = listOf(blackPieces, whitePieces).flatten(),
+            canCastleDto = buildCanCastleMap(
+                    this.blackStatus.canCastleKingSide,
+                    this.blackStatus.canCastleQueenSide,
+                    this.whiteStatus.canCastleKingSide,
+                    this.whiteStatus.canCastleQueenSide
+            ),
+            enPassantDto = this.enPassant.toInternalDto(),
+            turn = this.turn?.toInternalEnum() ?: throw SchachfishInvalidInput("Turn not set")
+    )
+    return BoardStateDtoBuilder.fromCreationDto(boardStateCreationDto)
+}
 
 fun com.nicholasbrooking.pkg.schachfish.api.models.EnPassantDto?.toInternalDto() = EnPassantDto(
         possible = this?.possible ?: false,
         taken = this?.taken?.toInternalDto()
 )
 
-
-fun com.nicholasbrooking.pkg.schachfish.api.models.PieceDto.toInternalDto(colour: Colour) = PieceDto(
-        position = this.position?.toInternalDto() ?: throw InvalidInputException("Position not set"),
+fun com.nicholasbrooking.pkg.schachfish.api.models.PieceDto.toInternalCreationDto(colour: Colour) = PieceCreationDto(
+        position = this.position?.toInternalDto() ?: throw SchachfishInvalidInput("Position not set"),
         colour = colour,
-        type = this.name?.toInternalEnum() ?: throw InvalidInputException("Piece name not set")
+        type = this.name?.toInternalEnum() ?: throw SchachfishInvalidInput("Piece name not set")
 )
 
 fun com.nicholasbrooking.pkg.schachfish.api.models.Colour.toInternalEnum(): Colour {
@@ -39,48 +49,22 @@ fun com.nicholasbrooking.pkg.schachfish.api.models.PieceName.toInternalEnum(): P
 }
 
 fun com.nicholasbrooking.pkg.schachfish.api.models.PositionDto.toInternalDto() = PositionDto(
-        x = this.x ?: throw InvalidInputException("Position x not set"),
-        y = this.y ?: throw InvalidInputException("Position y not set")
+        x = this.x ?: throw SchachfishInvalidInput("Position x not set"),
+        y = this.y ?: throw SchachfishInvalidInput("Position y not set")
 )
 
 fun buildCanCastleMap(canCastleKingSideBlack: Boolean?,
-                      canCastleQueenSideblack: Boolean?,
+                      canCastleQueenSideBlack: Boolean?,
                       canCastleKingSideWhite: Boolean?,
                       canCastleQueenSideWhite: Boolean?): Map<Colour, CanCastleDto> {
     val dict = mutableMapOf<Colour, CanCastleDto>()
     dict.set(Colour.black, CanCastleDto(
-            kingSide = canCastleKingSideBlack ?: throw InvalidInputException("Castling not set"),
-            queenSide = canCastleQueenSideblack ?: throw InvalidInputException("Castling not set")
+            kingSide = canCastleKingSideBlack ?: throw SchachfishInvalidInput("Castling not set"),
+            queenSide = canCastleQueenSideBlack ?: throw SchachfishInvalidInput("Castling not set")
     ))
     dict.set(Colour.white, CanCastleDto(
-            kingSide = canCastleKingSideWhite ?: throw InvalidInputException("Castling not set"),
-            queenSide = canCastleQueenSideWhite ?: throw InvalidInputException("Castling not set")
+            kingSide = canCastleKingSideWhite ?: throw SchachfishInvalidInput("Castling not set"),
+            queenSide = canCastleQueenSideWhite ?: throw SchachfishInvalidInput("Castling not set")
     ))
     return dict
 }
-
-fun buildPieceMatrix(
-        blackPieces: Array<com.nicholasbrooking.pkg.schachfish.api.models.PieceDto>?,
-        whitePieces: Array<com.nicholasbrooking.pkg.schachfish.api.models.PieceDto>?)
-        : Array<Array<Piece?>> {
-    val pieceMatrix: Array<Array<Piece?>> = Array(size = 8) { Array<Piece?>(size = 8) { null } }
-    blackPieces?.forEach { pieceDto ->
-        addPieceToMatrix(pieceDto, pieceDto.position, pieceMatrix, Colour.black)
-    }
-    whitePieces?.forEach { pieceDto ->
-        addPieceToMatrix(pieceDto, pieceDto.position, pieceMatrix, Colour.white)
-    }
-    return pieceMatrix
-}
-
-private fun addPieceToMatrix(
-        pieceDto: com.nicholasbrooking.pkg.schachfish.api.models.PieceDto,
-        position: com.nicholasbrooking.pkg.schachfish.api.models.PositionDto?,
-        pieceMatrix: Array<Array<Piece?>>, colour: Colour) {
-    pieceDto.position?.y?.let {
-        position?.x?.let { pieceMatrix.getOrNull(it) }
-                ?.set(it, PieceBuilder.fromPieceDto(pieceDto.toInternalDto(colour)))
-    }
-}
-
-

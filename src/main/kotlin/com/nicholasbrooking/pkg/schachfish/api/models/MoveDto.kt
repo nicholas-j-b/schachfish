@@ -11,6 +11,7 @@
 */
 package com.nicholasbrooking.pkg.schachfish.api.models
 
+import com.nicholasbrooking.pkg.schachfish.api.models.PieceName
 import com.nicholasbrooking.pkg.schachfish.api.models.PositionDto
 
 import com.squareup.moshi.Json
@@ -19,6 +20,7 @@ import com.squareup.moshi.Json
  * @param to 
  * @param from 
  * @param takenPiece 
+ * @param promoteTo 
  */
 
 data class MoveDto (
@@ -27,6 +29,8 @@ data class MoveDto (
     @Json(name = "from")
     val from: PositionDto? = null,
     @Json(name = "takenPiece")
-    val takenPiece: PositionDto? = null
+    val takenPiece: PositionDto? = null,
+    @Json(name = "promoteTo")
+    val promoteTo: PieceName? = null
 )
 
