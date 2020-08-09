@@ -37,7 +37,10 @@ class PositionService(
             when {
                 isSquareEmpty(positionToTest, boardStateDto) -> positionDtos.add(positionToTest)
                 takeColour == null -> break@loop
-                isSquareOccupiedBy(takeColour, positionToTest, boardStateDto) -> positionDtos.add(positionToTest)
+                isSquareOccupiedBy(takeColour, positionToTest, boardStateDto) -> {
+                    positionDtos.add(positionToTest)
+                    break@loop
+                }
             }
         }
         return positionDtos
