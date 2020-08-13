@@ -28,8 +28,9 @@ class PositionService(
             startingPositionDto: PositionDto,
             directionDto: DirectionDto,
             boardStateDto: BoardStateDto,
-            takeColour: Colour?, limit:
-            Int? = null): List<PositionDto> {
+            takeColour: Colour?,
+            limit: Int? = null
+    ): List<PositionDto> {
         var positionToTest = startingPositionDto
         val positionDtos = mutableListOf<PositionDto>()
         loop@ for (i in 0 until (limit ?: 8)) {

@@ -61,4 +61,16 @@ internal class QueenTest(
 
         assertThat(legalMoves.size).isEqualTo(27)
     }
+
+    @Test
+    fun `find queen legal moves on empty board near edge`() {
+        val (pieceDto, boardState) = getDefaultPieceOnBoard(
+                PIECE_TYPE,
+                positionDto = PositionDto(1, 4)
+        )
+
+        val legalMoves = queenService.getLegalMoves(pieceDto, boardState)
+
+        assertThat(legalMoves.size).isEqualTo(23)
+    }
 }

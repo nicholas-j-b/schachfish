@@ -5,6 +5,11 @@ import com.nicholasbrooking.pkg.schachfish.domain.models.PieceType
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.PieceConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.bishop.BlackBishopConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.bishop.WhiteBishopConfiguration
+import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.king.BlackKingConfiguration
+import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.king.KingConfiguration
+import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.king.WhiteKingConfiguration
+import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.knight.BlackKnightConfiguration
+import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.knight.WhiteKnightConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.pawn.BlackPawnConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.pawn.WhitePawnConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.queen.BlackQueenConfiguration
@@ -33,6 +38,14 @@ class PieceConfigurationService {
             PieceType.queen -> when (colour) {
                 Colour.black -> BlackQueenConfiguration
                 Colour.white -> WhiteQueenConfiguration
+            }
+            PieceType.knight -> when (colour) {
+                Colour.black -> BlackKnightConfiguration
+                Colour.white -> WhiteKnightConfiguration
+            }
+            PieceType.king -> when (colour) {
+                Colour.black -> BlackKingConfiguration
+                Colour.white -> WhiteKingConfiguration
             }
             else -> throw SchachfishInvalidState("Piece is wrong type")
         }

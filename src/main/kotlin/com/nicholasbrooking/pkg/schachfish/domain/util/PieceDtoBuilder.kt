@@ -13,6 +13,7 @@ class PieceDtoBuilder {
                 PieceType.rook -> RookDto(pieceCreationDto.colour, 0, pieceCreationDto.position) //TODO("id")
                 PieceType.bishop -> BishopDto(pieceCreationDto.colour, 0, pieceCreationDto.position) //TODO("id")
                 PieceType.queen -> QueenDto(pieceCreationDto.colour, 0, pieceCreationDto.position) //TODO("id")
+                PieceType.knight -> KnightDto(pieceCreationDto.colour, 0, pieceCreationDto.position) //TODO("id")
                 else -> throw Exception("bad pieceType: $pieceCreationDto.type")
             }
         }

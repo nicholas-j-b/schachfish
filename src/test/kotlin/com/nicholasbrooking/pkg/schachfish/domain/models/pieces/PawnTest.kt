@@ -64,7 +64,7 @@ internal class PawnTest(
     }
 
     @Test
-    fun `pawn can move two squares from starting position`() {
+    fun `pawn has two options for first move`() {
         val (pawnDto, boardState) = getDefaultPieceOnBoard(PIECE_TYPE, positionDto =  PositionDto(4, 6))
 
         val legalMoves = pawnService.getLegalMoves(pawnDto, boardState)

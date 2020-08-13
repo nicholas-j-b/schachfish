@@ -4,23 +4,23 @@ import com.nicholasbrooking.pkg.schachfish.domain.util.PieceDtoBuilder
 import com.nicholasbrooking.pkg.schachfish.domain.models.*
 import com.nicholasbrooking.pkg.schachfish.domain.models.board.PositionDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.util.getDefaultPieceOnBoard
-import com.nicholasbrooking.pkg.schachfish.service.piece.BishopService
+import com.nicholasbrooking.pkg.schachfish.service.piece.KnightService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-internal class BishopTest(
-        @Autowired private val bishopService: BishopService
+internal class KnightTest(
+        @Autowired private val knightService: KnightService
 ) {
     companion object {
         val DEFAULT_COLOUR = Colour.black
-        val PIECE_TYPE = PieceType.bishop
+        val PIECE_TYPE = PieceType.knight
     }
 
     @Test
-    fun `instantiate bishop`() {
+    fun `instantiate knight`() {
         val positionDto = PositionDto(0, 1)
         val pieceDto = PieceCreationDto(
                 positionDto,
@@ -28,47 +28,47 @@ internal class BishopTest(
                 PIECE_TYPE
         )
 
-        val bishop = PieceDtoBuilder.fromPieceCreationDto(pieceDto)
+        val knight = PieceDtoBuilder.fromPieceCreationDto(pieceDto)
 
-        assertThat(bishop).isNotNull
-        assertThat(bishop.position).isEqualTo(positionDto)
-        assertThat(bishop.colour).isEqualTo(DEFAULT_COLOUR)
-        assertThat(bishop.pieceName).isEqualTo("bishop")
+        assertThat(knight).isNotNull
+        assertThat(knight.position).isEqualTo(positionDto)
+        assertThat(knight.colour).isEqualTo(DEFAULT_COLOUR)
+        assertThat(knight.pieceName).isEqualTo("knight")
     }
 
     @Test
-    fun `find bishop legal moves on empty board in corner`() {
+    fun `find knight legal moves on empty board in corner`() {
         val (pieceDto, boardState) = getDefaultPieceOnBoard(
                 PIECE_TYPE,
                 positionDto = PositionDto(0, 0)
         )
 
-        val legalMoves = bishopService.getLegalMoves(pieceDto, boardState)
+        val legalMoves = knightService.getLegalMoves(pieceDto, boardState)
 
-        assertThat(legalMoves.size).isEqualTo(7)
+        assertThat(legalMoves.size).isEqualTo(2)
     }
 
     @Test
-    fun `find bishop legal moves on empty board in middle`() {
+    fun `find knight legal moves on empty board in middle`() {
         val (pieceDto, boardState) = getDefaultPieceOnBoard(
                 PIECE_TYPE,
                 positionDto = PositionDto(4, 4)
         )
 
-        val legalMoves = bishopService.getLegalMoves(pieceDto, boardState)
+        val legalMoves = knightService.getLegalMoves(pieceDto, boardState)
 
-        assertThat(legalMoves.size).isEqualTo(13)
+        assertThat(legalMoves.size).isEqualTo(8)
     }
 
     @Test
-    fun `find bishop legal moves on empty board near edge`() {
+    fun `find knight legal moves on empty board near edge`() {
         val (pieceDto, boardState) = getDefaultPieceOnBoard(
                 PIECE_TYPE,
                 positionDto = PositionDto(1, 4)
         )
 
-        val legalMoves = bishopService.getLegalMoves(pieceDto, boardState)
+        val legalMoves = knightService.getLegalMoves(pieceDto, boardState)
 
-        assertThat(legalMoves.size).isEqualTo(9)
+        assertThat(legalMoves.size).isEqualTo(6)
     }
 }
