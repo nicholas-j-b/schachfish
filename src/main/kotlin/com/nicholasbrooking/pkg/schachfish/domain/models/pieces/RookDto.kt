@@ -11,4 +11,5 @@ data class RookDto(
 ) : PieceDto {
     override val pieceType = PieceType.rook
     override val pieceName = pieceType.toString()
+    val hasMoved = false
 }

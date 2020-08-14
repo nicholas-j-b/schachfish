@@ -16,4 +16,9 @@ class BoardService(
     fun addPiecesToBoard(pieces: List<PieceDto>, boardStateDto: BoardStateDto){
         BoardStateDtoBuilder.addPiecesToMatrix(pieces, boardStateDto.pieceMatrix)
     }
+
+    fun removePiece(position: PositionDto, boardStateDto: BoardStateDto) {
+        boardStateDto.pieceMatrix[position.x][position.y] = null
+        //TODO("add to taken pieces")
+    }
 }

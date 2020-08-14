@@ -11,4 +11,5 @@ data class KingDto(
 ) : PieceDto {
     override val pieceType = PieceType.king
     override val pieceName = pieceType.toString()
+    val hasMoved = false
 }

@@ -3,6 +3,7 @@ package com.nicholasbrooking.pkg.schachfish.service.piece
 import com.nicholasbrooking.pkg.schachfish.domain.models.Colour
 import com.nicholasbrooking.pkg.schachfish.domain.models.PieceType
 import com.nicholasbrooking.pkg.schachfish.domain.models.board.BoardStateDto
+import com.nicholasbrooking.pkg.schachfish.domain.models.board.PositionDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.pawn.PawnConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.move.MoveDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceDto
@@ -19,6 +20,10 @@ class PawnService (
         val forwardMoves = getOpeningMoves(pieceDto, boardStateDto)
         val takeMoves = getTakeMoves(pieceDto, boardStateDto)
         return addPromotionMoves(pieceDto, listOf(forwardMoves, takeMoves).flatten())
+    }
+
+    override fun move(pieceDto: PieceDto, to: PositionDto) {
+        pieceDto.position = to
     }
 
     fun addPromotionMoves(pieceDto: PieceDto, moves: List<MoveDto>): List<MoveDto> {
