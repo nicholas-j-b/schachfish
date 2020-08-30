@@ -9,8 +9,7 @@ import com.nicholasbrooking.pkg.schachfish.service.mapper.toInternalEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @Controller
@@ -18,11 +17,12 @@ class MoveController(
         private val moveFinderService: MoveFinderService
 ) {
 
-    @PostMapping("/moves")
-    fun getLegalMovesFromBoardState(@RequestBody boardStateDto: BoardStateDto): ResponseEntity<MoveCollectionDto> {
+    @RequestMapping("/moves/{boardId}")
+    fun getLegalMovesFromBoardState(@PathVariable("boardId") boardId: String): ResponseEntity<MoveCollectionDto> {
         try {
-            val legalMoves = moveFinderService.getLegalMoves(boardStateDto.toInternalEntity())
-            return ResponseEntity.ok(legalMoves.toApiDto())
+//            val legalMoves = moveFinderService.getLegalMoves(boardStateDto.toInternalEntity())
+//            return ResponseEntity.ok(legalMoves.toApiDto())
+            return ResponseEntity.ok(MoveCollectionDto())
         } catch (e: SchachfishInvalidInput) {
             throw ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Boardstate did not internalise", e

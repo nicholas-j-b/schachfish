@@ -6,7 +6,6 @@ import com.nicholasbrooking.pkg.schachfish.domain.models.board.BoardStateDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.board.PositionDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.king.KingConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.move.MoveDto
-import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.KingDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceDto
 import com.nicholasbrooking.pkg.schachfish.service.configuration.PieceConfigurationService
 import org.springframework.stereotype.Service
@@ -20,9 +19,9 @@ class KingService (
         return slidePieceService.getSlideMoves(pieceDto, boardStateDto, getConfig(pieceDto.colour), 1)
     }
 
-    override fun move(pieceDto: KingDto, to: PositionDto) {
+    override fun move(pieceDto: PieceDto, to: PositionDto) {
         pieceDto.position = to
-        pieceDto.
+        pieceDto.hasMoved = false
     }
 
     private fun getConfig(colour: Colour): KingConfiguration {

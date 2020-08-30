@@ -22,7 +22,7 @@ class MoveService (
                     ?: throw SchachfishInvalidMove("no piece in from square found")
             boardService.removePiece(moveDto.from, boardStateDto)
             val service = pieceSwitchService.getService(pieceToMove.pieceType)
-            service.move(, moveDto.to)
+            service.move(pieceToMove, moveDto.to)
             pieceToMove.position = moveDto.to
             boardService.addPiecesToBoard(listOf(pieceToMove), boardStateDto)
             return boardStateDto
