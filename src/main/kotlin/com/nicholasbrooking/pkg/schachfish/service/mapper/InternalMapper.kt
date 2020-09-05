@@ -3,6 +3,7 @@ package com.nicholasbrooking.pkg.schachfish.service.mapper
 import com.nicholasbrooking.pkg.schachfish.domain.util.PieceDtoBuilder
 import com.nicholasbrooking.pkg.schachfish.domain.models.*
 import com.nicholasbrooking.pkg.schachfish.domain.models.board.*
+import com.nicholasbrooking.pkg.schachfish.domain.models.move.MoveDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceCreationDto
 import com.nicholasbrooking.pkg.schachfish.domain.util.BoardStateDtoBuilder
 import com.nicholasbrooking.pkg.schachfish.service.exception.SchachfishInvalidInput
@@ -51,6 +52,13 @@ fun com.nicholasbrooking.pkg.schachfish.api.models.PieceName.toInternalEnum(): P
 fun com.nicholasbrooking.pkg.schachfish.api.models.PositionDto.toInternalDto() = PositionDto(
         x = this.x ?: throw SchachfishInvalidInput("Position x not set"),
         y = this.y ?: throw SchachfishInvalidInput("Position y not set")
+)
+
+fun com.nicholasbrooking.pkg.schachfish.api.models.MoveDto.toInternalDto() = MoveDto(
+        from = this.from?.toInternalDto() ?: throw SchachfishInvalidInput("From not set"),
+        to = this.to?.toInternalDto() ?: throw SchachfishInvalidInput("To not set"),
+        takenPiece = this.takenPiece?.toInternalDto(),
+        promoteTo = this.promoteTo?.toInternalEnum()
 )
 
 fun buildCanCastleMap(canCastleKingSideBlack: Boolean?,

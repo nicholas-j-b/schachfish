@@ -24,6 +24,7 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter-api")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("redis.clients:jedis:2.8.0")
+    implementation("com.google.code.gson:gson:2.8.6")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
