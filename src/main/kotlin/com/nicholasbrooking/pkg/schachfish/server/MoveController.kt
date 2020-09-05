@@ -18,14 +18,13 @@ class MoveController(
 ) {
 
     @RequestMapping("/moves/{boardId}")
-    fun getLegalMovesFromBoardState(@PathVariable("boardId") boardId: String): ResponseEntity<MoveCollectionDto> {
+    fun getLegalMovesFromBoardState(@PathVariable("boardId") boardId: Long): ResponseEntity<MoveCollectionDto> {
         try {
-//            val legalMoves = moveFinderService.getLegalMoves(boardStateDto.toInternalEntity())
-//            return ResponseEntity.ok(legalMoves.toApiDto())
-            return ResponseEntity.ok(MoveCollectionDto())
+            val legalMoves = moveFinderService.getLegalMoves(boardId)
+            return ResponseEntity.ok(legalMoves.toApiDto())
         } catch (e: SchachfishInvalidInput) {
             throw ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Boardstate did not internalise", e
+                    HttpStatus.BAD_REQUEST, "failed getting board moves", e
             )
         }
     }

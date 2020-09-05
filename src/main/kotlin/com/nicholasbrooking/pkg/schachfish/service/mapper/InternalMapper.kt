@@ -58,13 +58,13 @@ fun buildCanCastleMap(canCastleKingSideBlack: Boolean?,
                       canCastleKingSideWhite: Boolean?,
                       canCastleQueenSideWhite: Boolean?): Map<Colour, CanCastleDto> {
     val dict = mutableMapOf<Colour, CanCastleDto>()
-    dict.set(Colour.black, CanCastleDto(
+    dict[Colour.black] = CanCastleDto(
             kingSide = canCastleKingSideBlack ?: throw SchachfishInvalidInput("Castling not set"),
             queenSide = canCastleQueenSideBlack ?: throw SchachfishInvalidInput("Castling not set")
-    ))
-    dict.set(Colour.white, CanCastleDto(
+    )
+    dict[Colour.white] = CanCastleDto(
             kingSide = canCastleKingSideWhite ?: throw SchachfishInvalidInput("Castling not set"),
             queenSide = canCastleQueenSideWhite ?: throw SchachfishInvalidInput("Castling not set")
-    ))
+    )
     return dict
 }

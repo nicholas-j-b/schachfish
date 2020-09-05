@@ -5,6 +5,7 @@ import com.nicholasbrooking.pkg.schachfish.domain.models.*
 import com.nicholasbrooking.pkg.schachfish.domain.models.move.MoveCollectionDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.move.MoveDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceDto
+import com.nicholasbrooking.pkg.schachfish.service.board.ActiveBoardService
 import com.nicholasbrooking.pkg.schachfish.service.piece.PawnService
 import com.nicholasbrooking.pkg.schachfish.service.piece.PieceSwitchService
 import com.nicholasbrooking.pkg.schachfish.service.piece.RookService
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class MoveFinderService (
-        private val pieceSwitchService: PieceSwitchService
+        private val pieceSwitchService: PieceSwitchService,
+        private val activeBoardService: ActiveBoardService
 ) {
-    fun getLegalMoves(boardStateDto: BoardStateDto): MoveCollectionDto {
+    fun getLegalMoves(boardId: Long): MoveCollectionDto {
+        val boardStateDto = activeBoardService.getBoard(boardId).currentState
         val allMoves = getAllMoves(boardStateDto)
         val filteredForLegalMoves = allMoves.filterForLegalMoves(boardStateDto)
         return MoveCollectionDto(moves = filteredForLegalMoves)

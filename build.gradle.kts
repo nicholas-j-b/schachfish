@@ -20,8 +20,10 @@ repositories {
 dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.junit.jupiter:junit-jupiter-api")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("redis.clients:jedis:2.8.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }

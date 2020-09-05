@@ -5,7 +5,7 @@ import org.springframework.data.redis.core.index.Indexed
 
 
 @RedisHash("ActiveBoards")
-data class ActiveBoards (
+data class ActiveBoard (
         @Indexed val id: Long,
-        var boards: List<BoardStateDto>
+        var currentState: BoardStateDto
 )
