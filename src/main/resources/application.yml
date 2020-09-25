@@ -1,2 +1,5 @@
+spring:
+  application:
+    name: schachfish
 server:
   port: 9100

@@ -1,6 +1,6 @@
 /**
 * Schachfish-Api
-* Schachfish is a chess engine for querying moves and board evaluations
+* Schachfish is a chess engine for making/querying moves and board evaluations
 *
 * The version of the OpenAPI document: 1.0.0
 * 

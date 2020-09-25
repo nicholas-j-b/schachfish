@@ -22,28 +22,21 @@ class MoveController(
         private val moveFinderService: MoveFinderService,
         private val moveService: MoveService
 ) {
+    val requestReceiver = RequestReceiver()
 
     @GetMapping("/moves/{boardId}")
     fun getLegalMovesFromBoardState(@PathVariable("boardId") boardId: Long): ResponseEntity<MoveCollectionDto> {
-        try {
+        requestReceiver.schachfishReceive {
             val legalMoves = moveFinderService.getLegalMoves(boardId)
             return ResponseEntity.ok(legalMoves.toApiDto())
-        } catch (e: SchachfishInvalidInput) {
-            throw ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "failed getting board moves", e
-            )
         }
     }
 
     @PostMapping("/moves/{boardId}")
     fun makeMove(@PathVariable("boardId") boardId: Long, @RequestBody(required = true) moveDto: MoveDto): ResponseEntity<String> {
-        try {
+        requestReceiver.schachfishReceive {
             moveService.makeMove(moveDto.toInternalDto(), boardId)
             return ResponseEntity.ok("Success")
-        } catch (e: SchachfishBoardNotFound) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Board not found")
-        } catch (e: SchachfishInvalidMove) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid move")
         }
     }
 }
