@@ -73,7 +73,7 @@ internal class PawnTest(
     }
 
     @Test
-    fun `pawn can take diagonally`() {
+    fun `pawn can take diagonally both ways`() {
         val (testPawnDto, boardState) = getDefaultPieceOnBoard(PIECE_TYPE, positionDto =  PositionDto(4, 4))
         val opponentPawnDto1 = getDefaultPawn(PIECE_TYPE, Colour.getOtherColour(DEFAULT_COLOUR), positionDto = PositionDto(3, 3))
         val opponentPawnDto2 = getDefaultPawn(PIECE_TYPE, Colour.getOtherColour(DEFAULT_COLOUR), positionDto = PositionDto(5, 3))
@@ -82,6 +82,10 @@ internal class PawnTest(
         val legalMoves = pawnService.getLegalMoves(testPawnDto, boardState)
 
         assertThat(legalMoves.size).isEqualTo(3)
+        val takeMoves = legalMoves.filter {
+            it.takenPiece != null
+        }
+        assertThat(takeMoves.size).isEqualTo(2)
     }
 
     @Test
