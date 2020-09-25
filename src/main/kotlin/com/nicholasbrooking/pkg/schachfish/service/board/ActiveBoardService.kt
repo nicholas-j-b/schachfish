@@ -35,5 +35,9 @@ class ActiveBoardService(
         return id
     }
 
+    fun deleteBoard(boardId: Long) {
+        activeBoardRepository.deleteById(boardId)
+    }
+
     private fun BoardStateDto.serialise() = gson.toJson(this)
 }
