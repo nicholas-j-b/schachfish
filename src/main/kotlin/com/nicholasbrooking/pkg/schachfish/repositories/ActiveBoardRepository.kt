@@ -6,5 +6,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ActiveBoardRepository : CrudRepository<ActiveBoard, Long> {
+}
 
+fun ActiveBoardRepository.exists(id: Long): Boolean {
+    return findById(id).get().id != null
 }

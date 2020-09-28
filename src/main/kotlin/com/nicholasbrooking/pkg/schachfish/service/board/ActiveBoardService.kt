@@ -6,6 +6,7 @@ import com.nicholasbrooking.pkg.schachfish.repositories.ActiveBoardRepository
 import com.nicholasbrooking.pkg.schachfish.service.exception.SchachfishBoardNotFound
 import org.springframework.stereotype.Service
 import com.google.gson.Gson
+import com.nicholasbrooking.pkg.schachfish.repositories.exists
 import com.nicholasbrooking.pkg.schachfish.service.exception.SchachfishBoardIdClash
 import org.springframework.data.mapping.model.MappingInstantiationException
 import org.springframework.transaction.annotation.Transactional
@@ -17,13 +18,16 @@ class ActiveBoardService(
     private val gson = Gson()
 
     @Transactional
-    fun getBoard(id: Long): ActiveBoard = activeBoardRepository.findById(id).orElseThrow {
-        SchachfishBoardNotFound("for id $id")
+    fun getBoard(boardId: Long): ActiveBoard {
+        checkBoardExists(boardId)
+        return activeBoardRepository.findById(boardId).orElseThrow {
+            SchachfishBoardNotFound("for id $boardId")
+        }
     }
 
     @Transactional
-    fun getBoardState(id: Long): BoardStateDto {
-        val board = getBoard(id)
+    fun getBoardState(boardId: Long): BoardStateDto {
+        val board = getBoard(boardId)
         return gson.fromJson(board.currentState, BoardStateDto::class.java)
     }
 
@@ -51,22 +55,14 @@ class ActiveBoardService(
     }
 
     private fun checkBoardExists(boardId: Long) {
-        try {
-            if (!activeBoardRepository.existsById(boardId)) {
-                throw SchachfishBoardNotFound("Board not found")
-            }
-        } catch (e: MappingInstantiationException) { // TODO("why is this throwing?")
+        if (!activeBoardRepository.exists(boardId)) {
             throw SchachfishBoardNotFound("Board not found")
         }
     }
 
     private fun checkBoardIdDoesNotExist(boardId: Long) {
-        try {
-            if (activeBoardRepository.existsById(boardId)) {
-                throw SchachfishBoardIdClash("Board already exists")
-            }
-        } catch (e: MappingInstantiationException) { // TODO("why is this throwing?")
-            throw SchachfishBoardNotFound("Board not found")
+        if (activeBoardRepository.exists(boardId)) {
+            throw SchachfishBoardIdClash("Board already exists")
         }
     }
 

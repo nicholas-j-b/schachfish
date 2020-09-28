@@ -16,7 +16,6 @@ import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.queen.Bla
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.queen.WhiteQueenConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.rook.BlackRookConfiguration
 import com.nicholasbrooking.pkg.schachfish.domain.models.configuration.rook.WhiteRookConfiguration
-import com.nicholasbrooking.pkg.schachfish.service.exception.SchachfishInvalidState
 import org.springframework.stereotype.Service
 
 @Service
@@ -47,7 +46,6 @@ class PieceConfigurationService {
                 Colour.black -> BlackKingConfiguration
                 Colour.white -> WhiteKingConfiguration
             }
-            else -> throw SchachfishInvalidState("Piece is wrong type")
         }
     }
 
