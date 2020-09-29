@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service
 import com.google.gson.Gson
 import com.nicholasbrooking.pkg.schachfish.repositories.exists
 import com.nicholasbrooking.pkg.schachfish.service.exception.SchachfishBoardIdClash
-import org.springframework.data.mapping.model.MappingInstantiationException
 import org.springframework.transaction.annotation.Transactional
 
 @Service
@@ -29,6 +28,11 @@ class ActiveBoardService(
     fun getBoardState(boardId: Long): BoardStateDto {
         val board = getBoard(boardId)
         return gson.fromJson(board.currentState, BoardStateDto::class.java)
+    }
+
+    @Transactional
+    fun getAllBoardIds(): List<Long> {
+        return activeBoardRepository.findAll().mapNotNull { it.id }
     }
 
     @Transactional
