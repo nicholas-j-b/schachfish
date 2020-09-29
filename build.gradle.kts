@@ -9,8 +9,8 @@ plugins {
     id("org.openapi.generator") version "4.3.1"
 }
 
-group = "com.nicholasbrooking.pgk"
-version = "0.0.3"
+group = "com.nicholasbrooking.pkg"
+version = "0.0.4"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {

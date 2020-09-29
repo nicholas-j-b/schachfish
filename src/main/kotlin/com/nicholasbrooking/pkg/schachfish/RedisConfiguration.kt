@@ -10,7 +10,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 
 @Configuration
 @EnableRedisRepositories
-class Configuration {
+class RedisConfiguration {
     @Bean
     fun redisConnectionFactory(): RedisConnectionFactory {
         return JedisConnectionFactory()
