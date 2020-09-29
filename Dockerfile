@@ -15,7 +15,7 @@ RUN gradle clean build -x test
 # run image
 FROM java:8-jre-alpine
 ENV APP_HOME=/usr/app
-ENV ARTIFACT_ID=schachfish-0.0.1-SNAPSHOT.jar
+ENV ARTIFACT_ID=schachfish-0.0.3.jar
 
 WORKDIR $APP_HOME
 COPY --from=BUILD_IMAGE $APP_HOME/build/libs/$ARTIFACT_ID $APP_HOME/$ARTIFACT_ID
