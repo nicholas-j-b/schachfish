@@ -39,9 +39,9 @@ class BoardController(
     }
 
     @GetMapping("/board/allIds")
-    fun getAllBoardIds(): ResponseEntity<List<String>> {
+    fun getAllBoardIds(): ResponseEntity<List<Long>> {
         requestReceiver.schachfishReceive {
-            return ResponseEntity.ok(activeBoardService.getAllBoardIds().map { it.toString() })
+            return ResponseEntity.ok(activeBoardService.getAllBoardIds())
         }
     }
 
