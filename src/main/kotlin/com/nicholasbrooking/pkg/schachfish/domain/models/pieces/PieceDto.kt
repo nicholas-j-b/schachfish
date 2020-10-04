@@ -4,7 +4,6 @@ import com.nicholasbrooking.pkg.schachfish.domain.models.*
 import com.nicholasbrooking.pkg.schachfish.domain.models.board.PositionDto
 
 data class PieceDto (
-
     val colour: Colour,
     val id: Int,
     val pieceType: PieceType,

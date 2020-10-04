@@ -1,5 +1,7 @@
 spring:
   application:
     name: schachfish
+  jackson:
+    default-property-inclusion: NON_NULL
 server:
   port: 9100

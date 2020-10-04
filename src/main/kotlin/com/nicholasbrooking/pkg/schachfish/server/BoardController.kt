@@ -1,47 +1,45 @@
 package com.nicholasbrooking.pkg.schachfish.server
 
-import com.nicholasbrooking.pkg.schachfish.api.models.BoardStateDto
+import com.nicholasbrooking.pkg.schachfish.api.BoardApi
+import com.nicholasbrooking.pkg.schachfish.api.model.BoardStateDto
+import com.nicholasbrooking.pkg.schachfish.api.model.BoardId
 import com.nicholasbrooking.pkg.schachfish.service.board.ActiveBoardService
 import com.nicholasbrooking.pkg.schachfish.service.mapper.toApiDto
+import com.nicholasbrooking.pkg.schachfish.service.mapper.toApiId
 import com.nicholasbrooking.pkg.schachfish.service.mapper.toInternalEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
 
 
 @Controller
 class BoardController(
         val activeBoardService: ActiveBoardService
-) {
+): BoardApi {
     val requestReceiver = RequestReceiver()
 
-    @DeleteMapping("/board/{boardId}")
-    fun deleteBoard(@PathVariable("boardId") boardId: Long): ResponseEntity<String> {
+    override fun deleteBoard(boardId: Long): ResponseEntity<String> {
         requestReceiver.schachfishReceive {
             activeBoardService.deleteBoard(boardId)
             return ResponseEntity.ok("Success")
         }
     }
 
-    @PostMapping("/board/create")
-    fun createBoardFromState(@RequestBody boardStateDto: BoardStateDto): ResponseEntity<Long> {
+    override fun createBoardFromState(boardStateDto: BoardStateDto?): ResponseEntity<BoardId> {
         requestReceiver.schachfishReceive {
             val id = activeBoardService.createBoard(boardStateDto.toInternalEntity())
-            return ResponseEntity.ok(id)
+            return ResponseEntity.ok(id.toApiId())
         }
     }
 
-    @GetMapping("/board/{boardId}")
-    fun getBoard(@PathVariable("boardId") boardId: Long): ResponseEntity<BoardStateDto> {
+    override fun getBoard(boardId: Long): ResponseEntity<BoardStateDto> {
         requestReceiver.schachfishReceive {
             return ResponseEntity.ok(activeBoardService.getBoardState(boardId).toApiDto())
         }
     }
 
-    @GetMapping("/board/allIds")
-    fun getAllBoardIds(): ResponseEntity<List<Long>> {
+    override fun getAllBoardIds(): ResponseEntity<List<BoardId>> {
         requestReceiver.schachfishReceive {
-            return ResponseEntity.ok(activeBoardService.getAllBoardIds())
+            return ResponseEntity.ok(activeBoardService.getAllBoardIds().map { it.toApiId() })
         }
     }
 

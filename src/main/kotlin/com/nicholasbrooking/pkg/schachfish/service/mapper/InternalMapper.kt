@@ -9,7 +9,10 @@ import com.nicholasbrooking.pkg.schachfish.domain.util.BoardStateDtoBuilder
 import com.nicholasbrooking.pkg.schachfish.service.exception.SchachfishInvalidInput
 
 
-fun com.nicholasbrooking.pkg.schachfish.api.models.BoardStateDto.toInternalEntity(): BoardStateDto {
+fun com.nicholasbrooking.pkg.schachfish.api.model.BoardStateDto?.toInternalEntity(): BoardStateDto {
+    if (this == null) {
+        throw SchachfishInvalidInput("No board state given")
+    }
     val blackPieces = this.blackStatus?.pieces?.map {
         PieceDtoBuilder.fromPieceCreationDto(it.toInternalCreationDto(Colour.black))
     } ?: throw SchachfishInvalidInput("No black pieces list")
@@ -30,36 +33,41 @@ fun com.nicholasbrooking.pkg.schachfish.api.models.BoardStateDto.toInternalEntit
     return BoardStateDtoBuilder.fromCreationDto(boardStateCreationDto)
 }
 
-fun com.nicholasbrooking.pkg.schachfish.api.models.EnPassantDto?.toInternalDto() = EnPassantDto(
+fun com.nicholasbrooking.pkg.schachfish.api.model.EnPassantDto?.toInternalDto() = EnPassantDto(
         possible = this?.possible ?: false,
         taken = this?.taken?.toInternalDto()
 )
 
-fun com.nicholasbrooking.pkg.schachfish.api.models.PieceDto.toInternalCreationDto(colour: Colour) = PieceCreationDto(
+fun com.nicholasbrooking.pkg.schachfish.api.model.PieceDto.toInternalCreationDto(colour: Colour) = PieceCreationDto(
         position = this.position?.toInternalDto() ?: throw SchachfishInvalidInput("Position not set"),
         colour = colour,
         type = this.name?.toInternalEnum() ?: throw SchachfishInvalidInput("Piece name not set")
 )
 
-fun com.nicholasbrooking.pkg.schachfish.api.models.Colour.toInternalEnum(): Colour {
+fun com.nicholasbrooking.pkg.schachfish.api.model.Colour.toInternalEnum(): Colour {
     return Colour.stringToEnum(this.value)
 }
 
-fun com.nicholasbrooking.pkg.schachfish.api.models.PieceName.toInternalEnum(): PieceType {
+fun com.nicholasbrooking.pkg.schachfish.api.model.PieceName.toInternalEnum(): PieceType {
     return PieceType.stringToEnum(this.value)
 }
 
-fun com.nicholasbrooking.pkg.schachfish.api.models.PositionDto.toInternalDto() = PositionDto(
+fun com.nicholasbrooking.pkg.schachfish.api.model.PositionDto.toInternalDto() = PositionDto(
         x = this.x ?: throw SchachfishInvalidInput("Position x not set"),
         y = this.y ?: throw SchachfishInvalidInput("Position y not set")
 )
 
-fun com.nicholasbrooking.pkg.schachfish.api.models.MoveDto.toInternalDto() = MoveDto(
-        from = this.from?.toInternalDto() ?: throw SchachfishInvalidInput("From not set"),
-        to = this.to?.toInternalDto() ?: throw SchachfishInvalidInput("To not set"),
-        takenPiece = this.takenPiece?.toInternalDto(),
-        promoteTo = this.promoteTo?.toInternalEnum()
-)
+fun com.nicholasbrooking.pkg.schachfish.api.model.MoveDto?.toInternalDto(): MoveDto {
+    if (this == null) {
+        throw SchachfishInvalidInput("No board state given")
+    }
+    return MoveDto(
+            from = this.from?.toInternalDto() ?: throw SchachfishInvalidInput("From not set"),
+            to = this.to?.toInternalDto() ?: throw SchachfishInvalidInput("To not set"),
+            takenPiece = this.takenPiece?.toInternalDto(),
+            promoteTo = this.promoteTo?.toInternalEnum()
+    )
+}
 
 fun buildCanCastleMap(canCastleKingSideBlack: Boolean?,
                       canCastleQueenSideBlack: Boolean?,

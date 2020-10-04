@@ -18,13 +18,22 @@ repositories {
 }
 
 dependencies {
-    implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("org.junit.jupiter:junit-jupiter-api")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+
     implementation("redis.clients:jedis:3.3.0")
+
+    implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
     implementation("com.google.code.gson:gson:2.8.6")
+
+    implementation("io.swagger:swagger-annotations:1.6.2")
+    implementation("org.openapitools:jackson-databind-nullable:0.2.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.11.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.3")
+
+    implementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
@@ -36,60 +45,60 @@ tasks.withType<Test> {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "1.8"
     }
 }
 
 
-//sourceSets {
-//    main {
-//        java {
-//            setSrcDirs(listOf(
-//                    "$buildDir/generated/src/main/java"
-//                    "$projectDir/src/main",
-//                    "$projectDir/src/test"
-//            ))
-//            sourceDirectories += "$buildDir/generated"
-//        }
-//		kotlin {
-//            setSrcDirs(listOf())
-//			srcDir += "$buildDir/generated"
-//		}
-//    }
-//}
+sourceSets {
+    main {
+        java {
+            setSrcDirs(listOf("${rootDir}/src/main/java"))
+        }
+    }
+}
 
-//openApiGenerate {
-//    generatorName.set("kotlin-server")
-//    inputSpec.set("https://raw.githubusercontent.com/nicholas-j-b/schachfish-api/master/src/main/resources/openapi.yaml")
-//	outputDir.set("$projectDir/src/main/kotlin/generated")
-//    outputDir.set("$buildDir/generated")
-//    generateModelDocumentation.set(false)
-//    generateApiDocumentation.set(false)
-//
-//    invokerPackage.set("com.nicholasbrooking.pgk.schachfish")
-//    configOptions.set(mapOf(
-//            "delegatePattern" to "true",
-//            "gradleBuildFile" to "false",
-//            "useBeanValidation" to "true",
-//            "serviceImplementation" to "true",
-//            "packageName" to "com.nicholasbrooking.pgk.schachfish.api",
-//            "groupName" to "com.nicholasbrooking.pgk.schachfish.api",
-//            "apiPackage" to "com.nicholasbrooking.pgk.schachfish.api",
-//            "basePackage" to "com.nicholasbrooking.pgk.schachfish.api",
-//            "modelPackage" to "com.nicholasbrooking.pgk.schachfish.api.model",
-//            "invokerPackage" to "com.nicholasbrooking.pgk.schachfish.api"
-//    ))
-//}
+tasks {
+    getByName<Delete>("clean") {
+        delete.add("${rootDir}/src/main/java")
+    }
+    compileKotlin {
+        dependsOn("openApiGenerate")
+    }
+}
 
-//    implementation("io.swagger:swagger-codegen-project:3.0.0-rc1")
-//    implementation("io.springfox:springfox-swagger2:3.0.0")
-//    implementation("io.springfox:springfox-swagger-ui:3.0.0")
-//    implementation("io.springfox:springfox-boot-starter:3.0.0")
-//    implementation("io.springfox:springfox-spring-web:2.3.1")
-//    implementation("io.springfox:springfox-core:2.10.5")
-//    implementation("io.springfox:springfox-swagger-common:3.0.0")
-//    implementation("org.jetbrains.kotlin:kotlin-reflect")
-//    implementation("javax.validation:validation-api")
-//    implementation("org.openapitools.empoa:empoa-jackson-serializer:1.2.1")
-//    implementation("org.openapitools:jackson-databind-nullable:0.2.1")
+openApiGenerate {
+    generatorName.set("spring")
+    inputSpec.set("https://raw.githubusercontent.com/nicholas-j-b/schachfish-api/open/src/main/resources/openapi.yaml")
+    outputDir.set("$rootDir")
+
+    systemProperties.set(mapOf(
+            "modelDocs" to "false",
+            "models" to "",
+            "apis" to "",
+            "supportingFiles" to "files"
+    ))
+
+    configOptions.set(mapOf(
+            "useOptional" to "true",
+            "swaggerDocketConfig" to "false",
+            "useBeanValidation" to "false",
+            "useTags" to "true",
+            "singleContentTypes" to "true",
+            "title" to rootProject.name,
+            "artifactId" to "${rootProject.name}.${version}",
+            "java8" to "false",
+            "generateSupportingFiles" to "false",
+//            "supportingFilesToGenerate" to "ApiUtil.java",
+            "serializableModel" to "true",
+            "interfaceOnly" to "true",
+            "groupName" to "com.nicholasbrooking.pkg.schachfish",
+            "packageName" to "com.nicholasbrooking.pkg.schachfish.api",
+            "apiPackage" to "com.nicholasbrooking.pkg.schachfish.api",
+            "basePackage" to "com.nicholasbrooking.pkg.schachfish.api",
+            "modelPackage" to "com.nicholasbrooking.pkg.schachfish.api.model",
+            "invokerPackage" to "com.nicholasbrooking.pkg.schachfish.api"
+    ))
+}
+
