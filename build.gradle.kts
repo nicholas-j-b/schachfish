@@ -90,7 +90,6 @@ openApiGenerate {
             "artifactId" to "${rootProject.name}.${version}",
             "java8" to "false",
             "generateSupportingFiles" to "false",
-//            "supportingFilesToGenerate" to "ApiUtil.java",
             "serializableModel" to "true",
             "interfaceOnly" to "true",
             "groupName" to "com.nicholasbrooking.pkg.schachfish",
@@ -98,7 +97,7 @@ openApiGenerate {
             "apiPackage" to "com.nicholasbrooking.pkg.schachfish.api",
             "basePackage" to "com.nicholasbrooking.pkg.schachfish.api",
             "modelPackage" to "com.nicholasbrooking.pkg.schachfish.api.model",
-            "invokerPackage" to "com.nicholasbrooking.pkg.schachfish.api"
+            "invokerPackage" to "com.nicholasbrooking.pkg.schachfish.api",
+            "configPackage" to "com.nicholasbrooking.pkg.schachfish.api"
     ))
 }
-
