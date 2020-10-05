@@ -70,7 +70,7 @@ tasks {
 
 openApiGenerate {
     generatorName.set("spring")
-    inputSpec.set("https://raw.githubusercontent.com/nicholas-j-b/schachfish-api/open/src/main/resources/openapi.yaml")
+    inputSpec.set("https://raw.githubusercontent.com/nicholas-j-b/schachfish-api/master/schachfish/src/main/resources/openapi.yml")
     outputDir.set("$rootDir")
 
     systemProperties.set(mapOf(
