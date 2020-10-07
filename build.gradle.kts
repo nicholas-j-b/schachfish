@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.cli.jvm.compiler.findMainClass
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -7,6 +8,10 @@ plugins {
     kotlin("jvm") version "1.3.72"
     kotlin("plugin.spring") version "1.3.72"
     id("org.openapi.generator") version "4.3.1"
+}
+
+application {
+    mainClassName = "com.nicholasbrooking.pkg.schachfish.SchachfishApplicationKt"
 }
 
 group = "com.nicholasbrooking.pkg"

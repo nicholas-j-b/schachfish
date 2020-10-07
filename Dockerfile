@@ -1,16 +1,13 @@
 # build image
-FROM gradle as BUILD_IMAGE
+FROM alpine as BUILD_IMAGE
 ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
 
-COPY gradle $APP_HOME/gradle
-COPY --chown=gradle:gradle . /home/gradle/src
-USER root
-RUN chown -R gradle /home/gradle/src
+RUN apk add gradle
+RUN apk add redis
 
-RUN gradle build || return 0
 COPY . .
-RUN gradle clean build -x test
+RUN ./build-script.sh
 
 # run image
 FROM java:8-jre-alpine
