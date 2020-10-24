@@ -2,11 +2,9 @@ package com.nicholasbrooking.pkg.schachfish.server
 
 import com.nicholasbrooking.pkg.schachfish.api.BoardApi
 import com.nicholasbrooking.pkg.schachfish.api.model.BoardStateDto
-import com.nicholasbrooking.pkg.schachfish.api.model.BoardId
 import com.nicholasbrooking.pkg.schachfish.service.board.ActiveBoardService
 import com.nicholasbrooking.pkg.schachfish.service.mapper.toApiDto
-import com.nicholasbrooking.pkg.schachfish.service.mapper.toApiId
-import com.nicholasbrooking.pkg.schachfish.service.mapper.toInternalEntity
+import com.nicholasbrooking.pkg.schachfish.service.mapper.toInternalDto
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 
@@ -24,10 +22,10 @@ class BoardController(
         }
     }
 
-    override fun createBoardFromState(boardStateDto: BoardStateDto?): ResponseEntity<BoardId> {
+    override fun createBoardFromState(boardStateDto: BoardStateDto?): ResponseEntity<Long> {
         requestReceiver.schachfishReceive {
-            val id = activeBoardService.createBoard(boardStateDto.toInternalEntity())
-            return ResponseEntity.ok(id.toApiId())
+            val id = activeBoardService.createBoard(boardStateDto.toInternalDto())
+            return ResponseEntity.ok(id)
         }
     }
 
@@ -37,9 +35,9 @@ class BoardController(
         }
     }
 
-    override fun getAllBoardIds(): ResponseEntity<List<BoardId>> {
+    override fun getAllBoardIds(): ResponseEntity<List<Long>> {
         requestReceiver.schachfishReceive {
-            return ResponseEntity.ok(activeBoardService.getAllBoardIds().map { it.toApiId() })
+            return ResponseEntity.ok(activeBoardService.getAllBoardIds().map { it })
         }
     }
 

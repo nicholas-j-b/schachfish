@@ -9,7 +9,9 @@ fun com.nicholasbrooking.pkg.schachfish.domain.models.board.BoardStateDto.toApiD
             .blackStatus(buildColourStatusDto(com.nicholasbrooking.pkg.schachfish.domain.models.Colour.black, this))
             .whiteStatus(buildColourStatusDto(com.nicholasbrooking.pkg.schachfish.domain.models.Colour.white, this))
             .turn(this.turn.toApiEnum())
-            .enPassant(this.enPassantDto.toApiDto())
+            .moveCollection(MoveCollectionDto()
+                    .moves(emptyList())
+            )
 }
 
 fun com.nicholasbrooking.pkg.schachfish.domain.models.board.EnPassantDto.toApiDto(): EnPassantDto {
@@ -57,9 +59,6 @@ fun com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceDto.toApiDto()
             .position(this.position.toApiDto())
             .name(this.pieceType.toApiDto())
 }
-
-fun Long.toApiId() = BoardId()
-        .id(this)
 
 fun buildColourStatusDto(colour: com.nicholasbrooking.pkg.schachfish.domain.models.Colour, boardStateDto: com.nicholasbrooking.pkg.schachfish.domain.models.board.BoardStateDto): ColourStatusDto {
     val canCastleDto = boardStateDto.canCastleDto[colour]

@@ -19,7 +19,7 @@ fun getDefaultPieceOnBoard(
     val pieceDto = getDefaultPawn(pieceType, colour, positionDto)
     val boardState = BoardStateDtoBuilder.fromCreationDto(
             BoardStateCreationDto(
-                    listOf(pieceDto)
+                    pieceList = listOf(pieceDto)
             )
     )
     return Pair(pieceDto, boardState)

@@ -3,13 +3,14 @@ package com.nicholasbrooking.pkg.schachfish.service.mapper
 import com.nicholasbrooking.pkg.schachfish.domain.util.PieceDtoBuilder
 import com.nicholasbrooking.pkg.schachfish.domain.models.*
 import com.nicholasbrooking.pkg.schachfish.domain.models.board.*
+import com.nicholasbrooking.pkg.schachfish.domain.models.move.MoveCollectionDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.move.MoveDto
 import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceCreationDto
 import com.nicholasbrooking.pkg.schachfish.domain.util.BoardStateDtoBuilder
 import com.nicholasbrooking.pkg.schachfish.service.exception.SchachfishInvalidInput
 
 
-fun com.nicholasbrooking.pkg.schachfish.api.model.BoardStateDto?.toInternalEntity(): BoardStateDto {
+fun com.nicholasbrooking.pkg.schachfish.api.model.BoardStateDto?.toInternalDto(): BoardStateDto {
     if (this == null) {
         throw SchachfishInvalidInput("No board state given")
     }
@@ -27,10 +28,16 @@ fun com.nicholasbrooking.pkg.schachfish.api.model.BoardStateDto?.toInternalEntit
                     this.whiteStatus.canCastleKingSide,
                     this.whiteStatus.canCastleQueenSide
             ),
-            enPassantDto = this.enPassant.toInternalDto(),
+            moveCollectionDto = this.moveCollection.toInternalDto(),
             turn = this.turn?.toInternalEnum() ?: throw SchachfishInvalidInput("Turn not set")
     )
     return BoardStateDtoBuilder.fromCreationDto(boardStateCreationDto)
+}
+
+fun com.nicholasbrooking.pkg.schachfish.api.model.MoveCollectionDto.toInternalDto(): MoveCollectionDto {
+    return MoveCollectionDto(
+            moves = this.moves.map { it.toInternalDto() }
+    )
 }
 
 fun com.nicholasbrooking.pkg.schachfish.api.model.EnPassantDto?.toInternalDto() = EnPassantDto(

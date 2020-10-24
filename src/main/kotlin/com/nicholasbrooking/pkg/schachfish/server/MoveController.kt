@@ -6,7 +6,6 @@ import com.nicholasbrooking.pkg.schachfish.api.model.MoveDto
 import com.nicholasbrooking.pkg.schachfish.service.move.MoveFinderService
 import com.nicholasbrooking.pkg.schachfish.service.mapper.toApiDto
 import com.nicholasbrooking.pkg.schachfish.service.mapper.toInternalDto
-import com.nicholasbrooking.pkg.schachfish.service.mapper.toInternalEntity
 import com.nicholasbrooking.pkg.schachfish.service.move.MoveService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
