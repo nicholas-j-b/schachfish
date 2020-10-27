@@ -7,6 +7,6 @@ import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceDto
 data class BoardStateCreationDto (
         val pieceList: List<PieceDto>,
         val canCastleDto: Map<Colour, CanCastleDto> = mapOf(),
-        val moveCollectionDto: MoveCollectionDto = MoveCollectionDto(emptyList()),
+        val history: List<MoveCollectionDto> = emptyList(),
         val turn: Colour = Colour.white
 )

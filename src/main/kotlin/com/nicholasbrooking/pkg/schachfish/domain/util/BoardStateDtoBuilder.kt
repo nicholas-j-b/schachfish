@@ -12,7 +12,7 @@ class BoardStateDtoBuilder {
             return BoardStateDto(
                     pieceMatrix = pieceMatrix,
                     canCastleDto = boardStateCreationDto.canCastleDto,
-                    moveCollectionDto = boardStateCreationDto.moveCollectionDto,
+                    history = boardStateCreationDto.history,
                     turn = boardStateCreationDto.turn
             )
         }

@@ -9,9 +9,7 @@ fun com.nicholasbrooking.pkg.schachfish.domain.models.board.BoardStateDto.toApiD
             .blackStatus(buildColourStatusDto(com.nicholasbrooking.pkg.schachfish.domain.models.Colour.black, this))
             .whiteStatus(buildColourStatusDto(com.nicholasbrooking.pkg.schachfish.domain.models.Colour.white, this))
             .turn(this.turn.toApiEnum())
-            .moveCollection(MoveCollectionDto()
-                    .moves(emptyList())
-            )
+            .history(this.history.map { it.toApiDto() })
 }
 
 fun com.nicholasbrooking.pkg.schachfish.domain.models.board.EnPassantDto.toApiDto(): EnPassantDto {

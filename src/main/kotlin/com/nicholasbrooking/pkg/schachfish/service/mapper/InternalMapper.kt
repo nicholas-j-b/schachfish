@@ -28,7 +28,7 @@ fun com.nicholasbrooking.pkg.schachfish.api.model.BoardStateDto?.toInternalDto()
                     this.whiteStatus.canCastleKingSide,
                     this.whiteStatus.canCastleQueenSide
             ),
-            moveCollectionDto = this.moveCollection.toInternalDto(),
+            history = this.history.map { it.toInternalDto() },
             turn = this.turn?.toInternalEnum() ?: throw SchachfishInvalidInput("Turn not set")
     )
     return BoardStateDtoBuilder.fromCreationDto(boardStateCreationDto)

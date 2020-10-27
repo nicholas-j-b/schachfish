@@ -7,7 +7,7 @@ import com.nicholasbrooking.pkg.schachfish.domain.models.pieces.PieceDto
 data class BoardStateDto (
         val pieceMatrix: Array<Array<PieceDto?>> = Array(size = 8) { Array<PieceDto?>(size = 8) { null } },
         val canCastleDto: Map<Colour, CanCastleDto> = mapOf(),
-        val moveCollectionDto: MoveCollectionDto = MoveCollectionDto(emptyList()),
+        val history: List<MoveCollectionDto> = emptyList(),
         val turn: Colour = Colour.white
 ) {
     override fun equals(other: Any?): Boolean {
